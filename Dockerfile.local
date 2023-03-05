@@ -1,0 +1,25 @@
+# Use an official Node.js runtime as a parent image
+FROM node:16-alpine
+
+# Capturing default arguments
+ARG API_PORT
+
+# Setting environment variables
+ENV API_PORT=${API_PORT}
+
+# Creating working directory
+WORKDIR /template_nest
+
+COPY ./nest-cli.json .
+COPY ./package.json .
+COPY ./tsconfig.build.json .
+COPY ./tsconfig.json .
+COPY ./yarn.lock .
+
+RUN yarn install
+
+# Expose the port the application runs on
+EXPOSE 3000
+
+# Start the application
+CMD [ "yarn", "start:dev" ]
